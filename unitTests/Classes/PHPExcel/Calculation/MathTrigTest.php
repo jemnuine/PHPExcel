@@ -13,6 +13,8 @@ class MathTrigTest extends PHPUnit_Framework_TestCase
             define('PHPEXCEL_ROOT', APPLICATION_PATH . '/');
         }
         require_once(PHPEXCEL_ROOT . 'PHPExcel/Autoloader.php');
+
+        PHPExcel_Calculation_Functions::setCompatibilityMode(PHPExcel_Calculation_Functions::COMPATIBILITY_EXCEL);
 	}
 
     /**
@@ -521,7 +523,7 @@ class MathTrigTest extends PHPUnit_Framework_TestCase
                     array('"text with quotes"'),
                     array(2),
                 ),
-                '=""text with quotes""',
+                '="text with quotes"',
                 array(
                     array(10),
                     array(100),
@@ -533,12 +535,24 @@ class MathTrigTest extends PHPUnit_Framework_TestCase
                     array('"text with quotes"'),
                     array(''),
                 ),
-                '>""', // Compare to the single characater " (double quote)
+                '>"', // Compare to the single characater " (double quote)
                 array(
                     array(10),
                     array(100),
                 ),
                 10
+            ),
+            array(
+                array(
+                    array(''),
+                    array('anything'),
+                ),
+                '>"', // Compare to the single characater " (double quote)
+                array(
+                    array(10),
+                    array(100),
+                ),
+                100
             ),
         );
 	}

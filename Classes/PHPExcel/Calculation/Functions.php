@@ -316,7 +316,12 @@ class PHPExcel_Calculation_Functions {
 		} else {
 			preg_match('/([<>=]+)(.*)/',$condition,$matches);
 			list(,$operator,$operand) = $matches;
-			if (!is_numeric($operand)) { $operand = PHPExcel_Calculation::_wrapResult(strtoupper($operand)); }
+
+			if (!is_numeric($operand)) {
+				$operand = str_replace('"', '""', $operand);
+				$operand = PHPExcel_Calculation::_wrapResult(strtoupper($operand));
+			}
+
 			return $operator.$operand;
 		}
 	}	//	function _ifCondition()
@@ -573,7 +578,6 @@ class PHPExcel_Calculation_Functions {
 				return 4;
 		} elseif(is_array($value)) {
 				return 64;
-				break;
 		} elseif(is_string($value)) {
 			//	Errors
 			if ((strlen($value) > 0) && ($value{0} == '#')) {
@@ -706,7 +710,7 @@ if ((!function_exists('mb_str_replace')) &&
 		}
 
 		foreach((array) $search as $key => $s) {
-			if($s == '') {
+			if($s == '' && $s !== 0) {
 				continue;
 			}
 			$r = !is_array($replace) ? $replace : (array_key_exists($key, $replace) ? $replace[$key] : '');
